@@ -16,7 +16,8 @@ if __name__ == "__main__":
 
     employee_id = argv[1]
 
-    user_url = "https://jsonplaceholder.typicode.com/users/{}".format(employee_id)
+    user_url = "https://jsonplaceholder.typicode.com/users/{}".format
+    (employee_id)
     user_response = requests.get(user_url)
     user_data = user_response.json()
 
@@ -26,7 +27,8 @@ if __name__ == "__main__":
             print("Error: Unable to fetch employee name.")
             exit()
 
-        todo_url = "https://jsonplaceholder.typicode.com/users/{}/todos".format(employee_id)
+        todo_url = "https://jsonplaceholder.typicode.com/users/{}/todos".format
+        (employee_id)
         todo_response = requests.get(todo_url)
 
         if todo_response.status_code == 200:
