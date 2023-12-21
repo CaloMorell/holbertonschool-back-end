@@ -1,0 +1,43 @@
+import requests
+import sys
+
+def get_employee_todo_progress(employee_id):
+    try:
+        # Make a GET request to the API to obtain employee TODO list
+        todos_response = requests.get(f'https://jsonplaceholder.typicode.com/todos?userId={employee_id}')
+        user_response = requests.get(f'https://jsonplaceholder.typicode.com/users/{employee_id}')
+
+        # Check if the requests were successful
+        todos_response.raise_for_status()
+        user_response.raise_for_status()
+
+        todos = todos_response.json()
+        user_data = user_response.json()
+
+        # Extract relevant information
+        employee_name = user_data.get('name', f'Employee {employee_id}')
+        done_tasks = [todo['title'] for todo in todos if todo['completed']]
+        total_tasks = len(todos)
+
+        # Display the information in the specified format
+        print(f'Employee {employee_name} is done with tasks ({len(done_tasks)}/{total_tasks}):')
+        print(f'\t{employee_name}: {len(done_tasks)}/{total_tasks}')
+
+        for task_title in done_tasks:
+            print(f'\t {task_title}')
+
+    except requests.exceptions.RequestException as e:
+        # Handle request errors
+        print(f'Error during request: {e}')
+
+if __name__ == '__main__':
+    # Check if the script is called with the correct number of arguments
+    if len(sys.argv) != 2:
+        print('Usage: python script.py <EMPLOYEE_ID>')
+        sys.exit(1)
+
+    # Get the employee ID from the command line argument
+    employee_id = sys.argv[1]
+
+    # Call the function with the provided employee ID
+    get_employee_todo_progress(employee_id)
