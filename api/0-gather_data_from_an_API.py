@@ -1,3 +1,7 @@
+#!/usr/bin/python3
+"""The script ensures proper error handling for potential issues during API
+requests and follows the specified guidelines for formatting and output. """
+
 import requests
 import sys
 

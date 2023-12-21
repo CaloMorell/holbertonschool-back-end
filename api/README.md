@@ -59,20 +59,28 @@ General
 
 Tasks
 0. Gather data from an API
-mandatory
 
-Write a Python script that, using this REST API, for a given employee ID, returns information about his/her TODO list progress.
+The Python script utilizes the requests module to interact with a given REST API, specifically designed for managing employee TODO lists. It takes an employee ID as a command line parameter and fetches information about the employee's progress on their TODO list from the API. The script then prints a summary on the standard output, adhering to the specified format:
 
-Requirements:
+    First Line: Displays the employee's name and the progress on tasks in the format:
 
-    You must use urllib or requests module
-    The script must accept an integer as a parameter, which is the employee ID
-    The script must display on the standard output the employee TODO list progress in this exact format:
-        First line: Employee EMPLOYEE_NAME is done with tasks(NUMBER_OF_DONE_TASKS/TOTAL_NUMBER_OF_TASKS):
-            EMPLOYEE_NAME: name of the employee
-            NUMBER_OF_DONE_TASKS: number of completed tasks
-            TOTAL_NUMBER_OF_TASKS: total number of tasks, which is the sum of completed and non-completed tasks
-        Second and N next lines display the title of completed tasks: TASK_TITLE (with 1 tabulation and 1 space before the TASK_TITLE)
+    csharp
+
+Employee EMPLOYEE_NAME is done with tasks(NUMBER_OF_DONE_TASKS/TOTAL_NUMBER_OF_TASKS):
+
+    EMPLOYEE_NAME: The name of the employee.
+    NUMBER_OF_DONE_TASKS: The number of completed tasks.
+    TOTAL_NUMBER_OF_TASKS: The total number of tasks, including both completed and non-completed tasks.
+
+Subsequent Lines: Display the titles of completed tasks with one tabulation and one space before each task title:
+
+markdown
+
+         TASK_TITLE
+
+        TASK_TITLE: The title of a completed task.
+
+The script ensures proper error handling for potential issues during API requests and follows the specified guidelines for formatting and output. 
 
 Repo:
 
@@ -82,7 +90,6 @@ Repo:
 
 0/7 pts
 1. Export to CSV
-mandatory
 
 Using what you did in the task #0, extend your Python script to export data in the CSV format.
 
