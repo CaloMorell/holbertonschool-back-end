@@ -2,51 +2,54 @@
 """The script ensures proper error handling for potential issues during API
 requests and follows the specified guidelines for formatting and output. """
 
-import json as json
-from collections import OrderedDict
 import requests
-from sys import argv
+import sys
 
+def make_api_request(url):
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f'Error during request: {e}')
+        return None
 
+def get_employee_todo_progress(employee_id):
+    todos_url = f'https://jsonplaceholder.typicode.com/todos?userId={employee_id}'
+    user_url = f'https://jsonplaceholder.typicode.com/users/{employee_id}'
 
-if __name__ == "__main__":
-    if len(argv) != 2:
-        print("Usage: {} employee_id".format(argv[0]))
-        exit()
+    # Make API requests
+    todos = make_api_request(todos_url)
+    user_data = make_api_request(user_url)
 
-    employee_id = argv[1]
+    if todos is None or user_data is None:
+        # Exit or handle errors accordingly
+        sys.exit(1)
 
-    user_url = "https://jsonplaceholder.typicode.com/users/{}".format
-    (employee_id)
-    user_response = requests.get(user_url)
-    user_data = user_response.json()
+    # Extract relevant information
+    employee_name = user_data.get('name', f'Employee {employee_id}')
+    done_tasks = [todo['title'] for todo in todos if todo['completed']]
+    total_tasks = len(todos)
 
-    if user_response.status_code == 200:
-        employee_name = user_data.get("username", "")
-        if not employee_name:
-            print("Error: Unable to fetch employee name.")
-            exit()
+    # Display the information in the specified format
+    print(f'Employee {employee_name} is done with tasks ({len(done_tasks)}/{total_tasks}):')
+    print(f'\t{employee_name}: {len(done_tasks)}/{total_tasks}')
 
-        todo_url = "https://jsonplaceholder.typicode.com/users/{}/todos".format
-        (employee_id)
-        todo_response = requests.get(todo_url)
+    for task_title in done_tasks:
+        print(f'\t {task_title}')
 
-        if todo_response.status_code == 200:
-            todos = todo_response.json()
+if __name__ == '__main__':
+    # Check if the script is called with the correct number of arguments
+    if len(sys.argv) != 2:
+        print('Usage: python script.py <EMPLOYEE_ID>')
+        sys.exit(1)
 
-            if todos:
-                total_tasks = len(todos)
-                completed_tasks = sum(1 for todo in todos if todo["completed"])
+    # Get the employee ID from the command line argument
+    try:
+        employee_id = int(sys.argv[1])
+    except ValueError:
+        print('Invalid employee ID. Please provide a valid integer.')
+        sys.exit(1)
 
-                print("Employee {} is done with tasks ({}/{}):".format(
-                    employee_name, completed_tasks, total_tasks))
-
-                for idx, todo in enumerate(todos, start=1):
-                    if todo["completed"]:
-                        print("\t {}. {}".format(idx, todo["title"]))
-            else:
-                print("Employee {} has no tasks.".format(employee_name))
-        else:
-            print("Error: Unable to fetch TODO list data from API")
-    else:
-        print("Error: Unable to fetch user data from API")
+    # Call the function with the provided employee ID
+    get_employee_todo_progress(employee_id)
