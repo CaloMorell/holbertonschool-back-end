@@ -5,6 +5,14 @@ requests and follows the specified guidelines for formatting and output. """
 import requests
 import sys
 
+
+if __name__ == '__main__':
+    # Check if the script is called with the correct number of arguments
+    if len(sys.argv) != 2:
+        print('Usage: python script.py <EMPLOYEE_ID>')
+        sys.exit(1)
+
+
 def make_api_request(url):
     try:
         response = requests.get(url)
@@ -32,17 +40,14 @@ def get_employee_todo_progress(employee_id):
     total_tasks = len(todos)
 
     # Display the information in the specified format
-    print(f'Employee {employee_name} is done with tasks ({len(done_tasks)}/{total_tasks}):')
+    print(f'Employee {employee_name} is done with tasks
+        ({len(done_tasks)}/{total_tasks}):')
     print(f'\t{employee_name}: {len(done_tasks)}/{total_tasks}')
 
     for task_title in done_tasks:
         print(f'\t {task_title}')
 
-if __name__ == '__main__':
-    # Check if the script is called with the correct number of arguments
-    if len(sys.argv) != 2:
-        print('Usage: python script.py <EMPLOYEE_ID>')
-        sys.exit(1)
+
 
     # Get the employee ID from the command line argument
     try:
