@@ -4,35 +4,44 @@
 """
 import json
 import requests
-import sys
+from collections import defaultdict
+
+users_url = "https://jsonplaceholder.typicode.com/users?id="
+todos_url = "https://jsonplaceholder.typicode.com/todos"
 
 
 def export_all_to_json():
-    user_response = requests.get('https://jsonplaceholder.typicode.com/users')
-    users_data = user_response.json()
+    """ Export all tasks from all employees to JSON """
 
-    all_tasks = {}
-    for user in users_data:
-        employee_id = user['id']
-        employee_name = user['name']
+    correct_output = defaultdict(list)
 
-        todos_response = requests.get(
-            'https://jsonplaceholder.typicode.com/todos?userId={}'
-            .format(employee_id))
-        todos_data = todos_response.json()
+    # Map userId to username to avoid multiple API requests for the same user
+    user_names = {}
 
-        tasks = []
-        for task in todos_data:
-            tasks.append({
-                "username": employee_name,
-                "task": task['title'],
-                "completed": task['completed']
+    try:
+        user_response = requests.get(users_url[:-1])  # Get all users
+        user_data = user_response.json()
+        for user in user_data:
+            user_names[user['id']] = user['username']
+
+        todo_response = requests.get(todos_url)
+        todo_data = todo_response.json()
+
+        for item in todo_data:
+            user_id = item['userId']
+            username = user_names.get(user_id, "Unknown")
+            correct_output[user_id].append({
+                'username': username,
+                'task': item['title'],
+                'completed': item['completed']
             })
 
-        all_tasks[employee_id] = tasks
+    except requests.exceptions.RequestException as e:
+        print(f"Error during API request: {e}")
+        sys.exit(1)
 
     with open('todo_all_employees.json', 'w') as jsonfile:
-        json.dump(all_tasks, jsonfile)
+        json.dump(correct_output, jsonfile)
 
 
 if __name__ == "__main__":
