@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 """Este script se utiliza para obtener y mostrar informacion sobre
 el progreso de la lista de tareas pendientes """
 
