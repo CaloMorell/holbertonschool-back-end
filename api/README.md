@@ -17,7 +17,6 @@ Write a Python script that, using a specified REST API, gathers information abou
 - Accept an integer as a parameter (employee ID)
 - Display employee TODO list progress in the specified format
 
-### Script
 - **File:** [0-gather_data_from_an_API.py]
 
 ## Task 1: Export to CSV
@@ -30,7 +29,6 @@ Extend the Python script from Task 0 to export data in CSV format.
 - Format: "USER_ID","USERNAME","TASK_COMPLETED_STATUS","TASK_TITLE"
 - File name: USER_ID.csv
 
-### Script
 - **File:** [1-export_to_CSV.py]
 
 ## Task 2: Export to JSON
@@ -43,7 +41,6 @@ Extend the Python script from Task 0 to export data in JSON format.
 - Format: { "USER_ID": [{"task": "TASK_TITLE", "completed": TASK_COMPLETED_STATUS, "username": "USERNAME"}, ... ]}
 - File name: USER_ID.json
 
-### Script
 - **File:** [2-export_to_JSON.py]
 
 ## Task 3: Dictionary of list of dictionaries
@@ -56,6 +53,5 @@ Extend the Python script from Task 0 to export data in JSON format for all emplo
 - Format: { "USER_ID": [ {"username": "USERNAME", "task": "TASK_TITLE", "completed": TASK_COMPLETED_STATUS}, ... ]}
 - File name: todo_all_employees.json
 
-### Script
 - **File:** [3-dictionary_of_list_of_dictionaries.py]
 
